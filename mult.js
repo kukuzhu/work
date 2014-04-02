@@ -141,7 +141,8 @@ function mult(app) {
 	          }).on('error', function(e) {
 	            //如果错误未满3次就进行重发;
 	            if (errorIndex <= 2) {
-	              arguments.callee(url, callback);
+	              errorIndex++;
+	              checkFunction(url, callback);
 	            } else {
 	              callback(false, {
 	                url: url,
@@ -167,7 +168,8 @@ function mult(app) {
 	    var result, anchorList = [],
 	      pattern = new RegExp('<a[^>]*href=[\'"](http[^\'"]*)[\'"][^>]*?>', 'g');
 	    while ((result = pattern.exec(str)) != null) {
-	      anchorList.push(result[1].replace(/&amp;/g, '&'));
+	    	//去掉SPM，打点
+	      anchorList.push(result[1].replace(/&amp;/g, '&').replace( /(&)spm=[^&]+/,"" ).replace(/(spm)=.+&/,"").replace(/(spm)=.+/,""));
 	    }
 	    if (anchorList.length) {
 	      callback(false, anchorList);
