@@ -301,7 +301,7 @@ function mult(app) {
 	});
 
 	var time = setInterval(function() {
-	  fs.writeFileSync('data/data.txt', {}, 'utf-8');
+	  fs.writeFileSync('data/data.txt', '{}', 'utf-8');
 	}, 86400000);
 
 }
