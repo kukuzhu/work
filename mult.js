@@ -6,10 +6,10 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var https = require('https');
-// //æ”¶åˆ°è¯·æ±‚ä»¥å
-// //setId:ç”ŸæˆIDï¼Œå†™å…¥æ–‡ä»¶ä»¥åè¿”å›ç”Ÿæˆçš„ID
-// //setData:æ ¹æ®IDï¼ŒæŠŠæ•°æ®å†™å…¥æ–‡ä»¶
-// //getData:æ ¹æ®IDï¼ŒæŠŠæ–‡ä»¶ä¸­åŒ¹é…çš„æ•°æ®è¿”å›
+// //ÊÕµ½ÇëÇóÒÔºó
+// //setId:Éú³ÉID£¬Ğ´ÈëÎÄ¼şÒÔºó·µ»ØÉú³ÉµÄID
+// //setData:¸ù¾İID£¬°ÑÊı¾İĞ´ÈëÎÄ¼ş
+// //getData:¸ù¾İID£¬°ÑÎÄ¼şÖĞÆ¥ÅäµÄÊı¾İ·µ»Ø
 
 var dataEvent = {
     setId: function() {
@@ -39,7 +39,7 @@ var dataEvent = {
     }
   };
 
-//æ£€æµ‹å¯¹è±¡æ˜¯å¦ä¸ºç©º
+//¼ì²â¶ÔÏóÊÇ·ñÎª¿Õ
 var testObj = function(obj) {
   for (var j in obj) {
     return false;
@@ -58,14 +58,14 @@ function mult(app) {
 	    "id": id
 	  });
 	 
-	  //å¼€å§‹æ£€æŸ¥äº†
+	  //¿ªÊ¼¼ì²éÁË
 	  var resultObj = {};
 	  var cacheObj = [];
 	  var i = 0;
 	  var checkAnchor = function(list, callback) {
 	    async.mapLimit(list, 10, function(url, callback) {
 
-	      //å…ˆåˆ°ç¼“å­˜é‡Œå»æŸ¥çœ‹æœ‰æ²¡æ ‡è®°ä¸ºæ­£ç¡®çš„
+	      //ÏÈµ½»º´æÀïÈ¥²é¿´ÓĞÃ»±ê¼ÇÎªÕıÈ·µÄ
 	      for (a in cacheObj) {
 	        if (cacheObj[a] == url) {
 	          callback(false, {
@@ -76,7 +76,7 @@ function mult(app) {
 	        }
 	      }
 
-	      //è¿™æ˜¯ç•™ä¸‹çš„é”™è¯¯æ£€æŸ¥çš„è®¡æ•°æ ‡å¿—
+	      //ÕâÊÇÁôÏÂµÄ´íÎó¼ì²éµÄ¼ÆÊı±êÖ¾
 	      var errorIndex = 0;
 	      var checkFunction = function() {
 	        var urlObj = _url.parse(url);
@@ -108,7 +108,7 @@ function mult(app) {
 	            req.abort();
 
 	          }).on('error', function(e) {
-	            //å¦‚æœé”™è¯¯æœªæ»¡3æ¬¡å°±è¿›è¡Œé‡å‘;
+	            //Èç¹û´íÎóÎ´Âú3´Î¾Í½øĞĞÖØ·¢;
 	            if (errorIndex <= 2) {
 	              errorIndex++;
 	              checkFunction(url, callback);
@@ -139,7 +139,7 @@ function mult(app) {
 	            }
 	            req.abort();
 	          }).on('error', function(e) {
-	            //å¦‚æœé”™è¯¯æœªæ»¡3æ¬¡å°±è¿›è¡Œé‡å‘;
+	            //Èç¹û´íÎóÎ´Âú3´Î¾Í½øĞĞÖØ·¢;
 	            if (errorIndex <= 2) {
 	              errorIndex++;
 	              checkFunction(url, callback);
@@ -168,13 +168,13 @@ function mult(app) {
 	    var result, anchorList = [],
 	      pattern = new RegExp('<a[^>]*href=[\'"](http[^\'"]*)[\'"][^>]*?>', 'g');
 	    while ((result = pattern.exec(str)) != null) {
-	    	//å»æ‰SPMï¼Œæ‰“ç‚¹
+	    	//È¥µôSPM£¬´òµã
 	      anchorList.push(result[1].replace(/&amp;/g, '&').replace( /(&)spm=[^&]+/,"" ).replace(/(spm)=.+&/,"").replace(/(spm)=.+/,""));
 	    }
 	    if (anchorList.length) {
 	      callback(false, anchorList);
 	    } else {
-	      console.log('è·å–é¡µé¢å†…çš„Aé“¾æ¥ï¼Œå‘ç°æ²¡æœ‰Aé“¾æ¥')
+	      console.log('»ñÈ¡Ò³ÃæÄÚµÄAÁ´½Ó£¬·¢ÏÖÃ»ÓĞAÁ´½Ó')
 	      callback(false, ["http://www.baidu.com"]);
 	    }
 	  }
@@ -223,11 +223,11 @@ function mult(app) {
 	          getPage(res.headers.location, callback);
 	          return;
 	        } else {
-	          callback("è¿”å›çš„æ˜¯é”™è¯¯é¡µé¢");
+	          callback("·µ»ØµÄÊÇ´íÎóÒ³Ãæ");
 	        }
 
 	      }).on('error', function() {
-	        callback("è¯·æ±‚é¡µé¢å‘ç”Ÿé”™è¯¯");
+	        callback("ÇëÇóÒ³Ãæ·¢Éú´íÎó");
 	      });
 	    } else if (urlObj.protocol == "https:") {
 	      console.log("start https")
@@ -246,10 +246,10 @@ function mult(app) {
 	          getPage(res.headers.location, callback);
 	          return;
 	        } else {
-	          callback("è¿”å›çš„æ˜¯é”™è¯¯é¡µé¢");
+	          callback("·µ»ØµÄÊÇ´íÎóÒ³Ãæ");
 	        }
 	      }).on('error', function() {
-	        callback("è¯·æ±‚é¡µé¢å‘ç”Ÿé”™è¯¯");
+	        callback("ÇëÇóÒ³Ãæ·¢Éú´íÎó");
 	      });
 	    }
 
@@ -276,7 +276,7 @@ function mult(app) {
 	    console.log(err);
 	    console.log(resultObj);
 	    // console.log(cacheObj);
-	    //åœ¨è¿™é‡ŒæŠŠç»“æœå†™å…¥æ–‡ä»¶
+	    //ÔÚÕâÀï°Ñ½á¹ûĞ´ÈëÎÄ¼ş
 	    dataEvent.setData(id, resultObj);
 	    resultObj = {};
 	  });
@@ -286,7 +286,7 @@ function mult(app) {
 	app.get("/getResult", function(req, res) {
 	  var param = req.query.id;
 
-	  //è¯»å–æ–‡ä»¶å†…å®¹
+	  //¶ÁÈ¡ÎÄ¼şÄÚÈİ
 	  if (testObj(dataEvent.getData(param))) {
 	    res.json({
 	      "status": "false",

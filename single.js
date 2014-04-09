@@ -11,8 +11,8 @@ var single = function(app){
 	
 	var startCheck = function(req,res,index){
 		console.log(index)
-		console.log("æ–°çš„å¼€å§‹");
-		// æ‹¿åˆ°æ¥å£é‡Œçš„ url å‚æ•°
+		console.log("ĞÂµÄ¿ªÊ¼");
+		// ÄÃµ½½Ó¿ÚÀïµÄ url ²ÎÊı
 	  var url = req.query.zhuliqiurl,
 	    urlObj = _url.parse(url),
 	    i = req.query.i;
@@ -30,7 +30,7 @@ var single = function(app){
 	    },
 	    "rejectUnauthorized": false
 	  }
-	  //ç¼“å­˜é‡Œæœ‰å°±ä¸ç»§ç»­ä¸‹å»äº†
+	  //»º´æÀïÓĞ¾Í²»¼ÌĞøÏÂÈ¥ÁË
 	  for( var a in cache ) {
 	  	if( cache[a] == url ) {
 	  		res.json({
@@ -41,19 +41,19 @@ var single = function(app){
 	  	}
 	  }
 	  if (protocol == "http:") {
-	    var reqa = http.get(options, function(resa) { // å»è¯·æ±‚è¿™ä¸ªé“¾æ¥
+	    var reqa = http.get(options, function(resa) { // È¥ÇëÇóÕâ¸öÁ´½Ó
 	      // console.log(resa.statusCode);
 	      // console.log(resa.headers);
 	      // console.log(resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && res.headers.location.indexOf("wrongpage") >= 0))
-	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // æŸ¥çœ‹çŠ¶æ€ä¿¡æ¯ï¼Œæ˜¯ 404 å°±æ˜¯æ­»é“¾
-	      	console.log("å‡ºç°æ­»é“¾")
+	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // ²é¿´×´Ì¬ĞÅÏ¢£¬ÊÇ 404 ¾ÍÊÇËÀÁ´
+	      	console.log("³öÏÖËÀÁ´")
 	      	if( index >= 3 ) {
 		      	res.json({
 		          'succ': "true",
 		          "i": i
 		        });
 	      	} else {
-	      		console.log("é‡æ–°å¼€å§‹")
+	      		console.log("ÖØĞÂ¿ªÊ¼")
 	      		startCheck(req,res,++index);
 	      	}
 	      } else {
@@ -66,7 +66,7 @@ var single = function(app){
 	      reqa.abort();
 	      // console.log(i);
 	      // console.log(resa.statusCode);
-	    }).on('error', function() { // å‡ºé”™ä¹Ÿæ˜¯æ­»é“¾
+	    }).on('error', function() { // ³ö´íÒ²ÊÇËÀÁ´
 	      	if( index >= 3 ) {
 		      	res.json({
 		          'succ': "true",
@@ -74,7 +74,7 @@ var single = function(app){
 		        });
 	      	} else {
 	      		
-	      		console.log("é‡æ–°å¼€å§‹")
+	      		console.log("ÖØĞÂ¿ªÊ¼")
 	      		startCheck(req,res,++index);
 	      	}
 
@@ -84,14 +84,14 @@ var single = function(app){
 	  } else if (protocol == "https:") {
 	    var reqa = https.request(options, function(resa) {
 
-	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // æŸ¥çœ‹çŠ¶æ€ä¿¡æ¯ï¼Œæ˜¯ 404 å°±æ˜¯æ­»é“¾
+	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // ²é¿´×´Ì¬ĞÅÏ¢£¬ÊÇ 404 ¾ÍÊÇËÀÁ´
 	      	if( index >= 3 ) {
 		      	res.json({
 		          'succ': "true",
 		          "i": i
 		        });
 	      	} else {
-	      		console.log("é‡æ–°å¼€å§‹")
+	      		console.log("ÖØĞÂ¿ªÊ¼")
 	      		startCheck(req,res,++index);
 	      	}
 	      } else {
@@ -110,21 +110,21 @@ var single = function(app){
 		          "i": i
 		        });
 	      	} else {
-	      		console.log("é‡æ–°å¼€å§‹")
+	      		console.log("ÖØĞÂ¿ªÊ¼")
 	      		startCheck(req,res,++index);
 	      	}
 	    });
 	    reqa.end();
 	  }
 	}
-	//è¿™é‡Œæ˜¯å•é¡µé¢çš„
-	//å»è¯·æ±‚éªŒè¯è§„åˆ™
+	//ÕâÀïÊÇµ¥Ò³ÃæµÄ
+	//È¥ÇëÇóÑéÖ¤¹æÔò
 	app.get('/reglist', function(req, res) {
 	  res.json({
 	    "data": reg.reglist
 	  });
 	});
-	//å¯åŠ¨å•é¡µé¢æ£€æŸ¥
+	//Æô¶¯µ¥Ò³Ãæ¼ì²é
 	app.get('/check', function(req, res) {
 		startCheck(req,res,0);
 	  
