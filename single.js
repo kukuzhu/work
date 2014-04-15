@@ -11,8 +11,8 @@ var single = function(app){
 	
 	var startCheck = function(req,res,index){
 		console.log(index)
-		console.log("ĞÂµÄ¿ªÊ¼");
-		// ÄÃµ½½Ó¿ÚÀïµÄ url ²ÎÊı
+		console.log("æ–°çš„å¼€å§‹");
+		// æ‹¿åˆ°æ¥å£é‡Œçš„ url å‚æ•°
 	  var url = req.query.zhuliqiurl,
 	    urlObj = _url.parse(url),
 	    i = req.query.i;
@@ -20,9 +20,12 @@ var single = function(app){
 	  var protocol = urlObj.protocol,
 	    host = urlObj.host,
 	    path = urlObj.path;
-
+	    console.log(url);
+	    console.log(host);
+	    console.log(path);
+	    console.log(protocol);
 	  var options = {
-	    "host": host,
+	    "host": host.split(":")[0],
 	    "path": path,
 	    "headers": {
 	      "User-Agent": "add",
@@ -30,7 +33,7 @@ var single = function(app){
 	    },
 	    "rejectUnauthorized": false
 	  }
-	  //»º´æÀïÓĞ¾Í²»¼ÌĞøÏÂÈ¥ÁË
+	  //ç¼“å­˜é‡Œæœ‰å°±ä¸ç»§ç»­ä¸‹å»äº†
 	  for( var a in cache ) {
 	  	if( cache[a] == url ) {
 	  		res.json({
@@ -41,19 +44,21 @@ var single = function(app){
 	  	}
 	  }
 	  if (protocol == "http:") {
-	    var reqa = http.get(options, function(resa) { // È¥ÇëÇóÕâ¸öÁ´½Ó
+	    var reqa = http.get(options, function(resa) { // å»è¯·æ±‚è¿™ä¸ªé“¾æ¥
 	      // console.log(resa.statusCode);
 	      // console.log(resa.headers);
 	      // console.log(resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && res.headers.location.indexOf("wrongpage") >= 0))
-	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // ²é¿´×´Ì¬ĞÅÏ¢£¬ÊÇ 404 ¾ÍÊÇËÀÁ´
-	      	console.log("³öÏÖËÀÁ´")
+	  
+	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // æŸ¥çœ‹çŠ¶æ€ä¿¡æ¯ï¼Œæ˜¯ 404 å°±æ˜¯æ­»é“¾
+	      	
+	      	console.log("å‡ºç°æ­»é“¾")
 	      	if( index >= 3 ) {
 		      	res.json({
 		          'succ': "true",
 		          "i": i
 		        });
 	      	} else {
-	      		console.log("ÖØĞÂ¿ªÊ¼")
+	      		console.log("é‡æ–°å¼€å§‹")
 	      		startCheck(req,res,++index);
 	      	}
 	      } else {
@@ -66,7 +71,8 @@ var single = function(app){
 	      reqa.abort();
 	      // console.log(i);
 	      // console.log(resa.statusCode);
-	    }).on('error', function() { // ³ö´íÒ²ÊÇËÀÁ´
+	    }).on('error', function() { // å‡ºé”™ä¹Ÿæ˜¯æ­»é“¾
+	    	console.log("å‡ºé”™å’¯")
 	      	if( index >= 3 ) {
 		      	res.json({
 		          'succ': "true",
@@ -74,7 +80,7 @@ var single = function(app){
 		        });
 	      	} else {
 	      		
-	      		console.log("ÖØĞÂ¿ªÊ¼")
+	      		console.log("é‡æ–°å¼€å§‹")
 	      		startCheck(req,res,++index);
 	      	}
 
@@ -84,14 +90,14 @@ var single = function(app){
 	  } else if (protocol == "https:") {
 	    var reqa = https.request(options, function(resa) {
 
-	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // ²é¿´×´Ì¬ĞÅÏ¢£¬ÊÇ 404 ¾ÍÊÇËÀÁ´
+	      if (resa.statusCode == "404" || resa.statusCode >= 500 || (resa.statusCode >= 300 && resa.statusCode < 400 && (resa.headers && resa.headers.location && resa.headers.location.indexOf("wrongpage") >= 0 ))) { // æŸ¥çœ‹çŠ¶æ€ä¿¡æ¯ï¼Œæ˜¯ 404 å°±æ˜¯æ­»é“¾
 	      	if( index >= 3 ) {
 		      	res.json({
 		          'succ': "true",
 		          "i": i
 		        });
 	      	} else {
-	      		console.log("ÖØĞÂ¿ªÊ¼")
+	      		console.log("é‡æ–°å¼€å§‹")
 	      		startCheck(req,res,++index);
 	      	}
 	      } else {
@@ -110,21 +116,23 @@ var single = function(app){
 		          "i": i
 		        });
 	      	} else {
-	      		console.log("ÖØĞÂ¿ªÊ¼")
+	      		console.log("é‡æ–°å¼€å§‹")
 	      		startCheck(req,res,++index);
 	      	}
 	    });
 	    reqa.end();
+	  } else {
+	  	res.json({'succ':'true','i':i})
 	  }
 	}
-	//ÕâÀïÊÇµ¥Ò³ÃæµÄ
-	//È¥ÇëÇóÑéÖ¤¹æÔò
+	//è¿™é‡Œæ˜¯å•é¡µé¢çš„
+	//å»è¯·æ±‚éªŒè¯è§„åˆ™
 	app.get('/reglist', function(req, res) {
 	  res.json({
 	    "data": reg.reglist
 	  });
 	});
-	//Æô¶¯µ¥Ò³Ãæ¼ì²é
+	//å¯åŠ¨å•é¡µé¢æ£€æŸ¥
 	app.get('/check', function(req, res) {
 		startCheck(req,res,0);
 	  

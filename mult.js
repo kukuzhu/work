@@ -81,7 +81,7 @@ function mult(app) {
 	      var checkFunction = function() {
 	        var urlObj = _url.parse(url);
 	        var option = {
-	          "host": urlObj.host,
+	          "host": urlObj.host.split(":")[0],
 	          "path": urlObj.path,
 	          "headers": {
 	            "User-Agent": "add",
@@ -89,6 +89,8 @@ function mult(app) {
 	          },
 	          "rejectUnauthorized": false
 	        }
+	        console.log(urlObj.protocol);
+	        console.log(url);
 	        if (urlObj.protocol == "http:") {
 	          var req = http.get(option, function(res) {
 	            var result = (res.statusCode === 404) || (res.statusCode >= 500) || ( (res.statusCode >= 300) && (res.statusCode < 400) && (res.statusCode >= 300 && res.statusCode < 400 && (res.headers && res.headers.location && res.headers.location.indexOf("wrongpage") >= 0 )));
@@ -150,6 +152,12 @@ function mult(app) {
 	              });
 	            }
 	          });
+	        } else {
+	        	console.log("error protocol")
+	        	callback(false, {
+	                url: url,
+	                result: true
+	           	});
 	        }
 	      }
 	      checkFunction()
@@ -196,7 +204,7 @@ function mult(app) {
 	    var urlObj = _url.parse(url);
 
 	    var option = {
-	      "host": urlObj.host,
+	      "host": urlObj.host.split(":")[0],
 	      "path": urlObj.path,
 	      "headers": {
 	        "User-Agent": "add",
@@ -207,7 +215,7 @@ function mult(app) {
 	    // console.log(urlObj.path)
 
 	    if (urlObj.protocol == "http:") {
-	      console.log("start http")
+	      console.log("start http");
 	      req = http.get(option, function(res) {
 	        if (res.statusCode == 200) {
 	          var body = '';
@@ -215,7 +223,6 @@ function mult(app) {
 	            body += chunk;
 	          });
 	          res.on('end', function(chunk) {
-
 	            callback(false, body)
 	          });
 	        } else if ((res.statusCode >= 300) && (res.statusCode < 400) && !(resa.statusCode >= 300 && resa.statusCode < 400 && (res.headers && res.headers.location && res.headers.location.indexOf("wrongpage") >= 0 ))) {
@@ -238,7 +245,6 @@ function mult(app) {
 	            body += chunk;
 	          });
 	          res.on('end', function(chunk) {
-	            console.log(body);
 	            callback(false, body)
 	          });
 	        } else if ((resa.statusCode >= 300 && resa.statusCode < 400 && !(res.headers && res.headers.location && res.headers.location.indexOf("wrongpage") >= 0 ))) {
@@ -251,7 +257,7 @@ function mult(app) {
 	      }).on('error', function() {
 	        callback("请求页面发生错误");
 	      });
-	    }
+	    } 
 
 	  };
 
